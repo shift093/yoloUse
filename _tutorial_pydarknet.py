@@ -1,16 +1,27 @@
+# coding=utf-8
 from yoloPydarknet import pydarknetYOLO
 import cv2
 import imutils
 import time
 
-yolo = pydarknetYOLO(obdata="../darknet/cfg/coco.data", weights="yolov3.weights", 
-    cfg="../darknet/cfg/yolov3.cfg")
+#載入yolo model
+yolo = pydarknetYOLO(obdata="../darknet/cfg/coco.data", weights="yolov3.weights", cfg="../darknet/cfg/yolov3.cfg")
+#輸出名稱
 video_out = "yolo_output.avi"
-
 start_time = time.time()
 
-if __name__ == "__main__":
 
+
+
+
+
+
+
+
+
+
+if __name__ == "__main__":
+    #這邊直接使用webcam
     VIDEO_IN = cv2.VideoCapture(0)
         if(video_out!=""):
             width = int(VIDEO_IN.get(cv2.CAP_PROP_FRAME_WIDTH))   # float
@@ -23,13 +34,21 @@ if __name__ == "__main__":
         hasFrame, frame = VIDEO_IN.read()
         # Stop the program if reached end of video
         if not hasFrame:
+            end = time.time()
+
+            seconds = end - start_time
+            fps  = frameID / seconds;
             print("Done processing !!!")
-            print("--- %s seconds ---" % (time.time() - start_time))
+            print ("Time taken : {0} seconds".format(seconds))
+            print ("Estimated frames per second : {0}".format(fps))
             break
 
         yolo.getObject(frame, labelWant="", drawBox=True, bold=1, textsize=0.6, bcolor=(0,0,255), tcolor=(255,255,255))
-        print ("Object counts:", yolo.objCounts)
+        #可以
+        #
         cv2.imshow("Frame", imutils.resize(frame, width=850))
+        frameID += 1
+
         if(video_out!=""):
             out.write(frame)
 
